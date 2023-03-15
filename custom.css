@@ -1,0 +1,46 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2&family=Charm&family=Dancing+Script:wght@400;600&family=Great+Vibes&family=Norican&family=Playfair+Display:wght@600;900&family=Roboto+Slab:wght@500&family=Satisfy&display=swap");
+
+body {
+  background-color: #3498db;
+  font-family: "Baloo Bhaina 2", cursive;
+}
+
+.main {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#box {
+  width: 40%;
+  /* height: 400px; */
+  box-shadow: 0px 0px 5px gray;
+  background-color: white;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.row {
+  width: 100%;
+  margin: 2rem;
+  margin-left: 0px;
+}
+
+.btn {
+  width: 100%;
+  padding: 5px;
+  background-color: #3498db;
+  font-size: 20px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
