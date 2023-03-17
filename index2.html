@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            margin-top: 12vh;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .u_name {
+            text-align: center;
+            padding: 50px;
+
+            background-color: aqua;
+            width: 500px;
+            height: 100px;
+        }
+
+        .btn1 {
+            padding: 6px;
+            margin-top: 20px;
+            width: 190px;
+        }
+
+        .btn1:hover {
+            background-color: rgb(0, 225, 255);
+            cursor: pointer;
+            border-radius: 15px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <div class="u_name">
+            <label for="user_name"> Enter User Name :-</label>
+            <input type="text" id="user_name">
+            <br>
+            <button class="btn1" onclick="myFunction()">
+                Submit And Create Quize
+            </button>
+        </div>
+
+    </form>
+
+    <script src="create.js"></script>
+</body>
+
+</html>
