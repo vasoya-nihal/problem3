@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your quiz</title>
+    <!-- <link rel="stylesheet" href="main.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <style>
+        .content {
+            margin-top: 54px;
+        }
+
+        .header {
+            padding: 15px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 9999;
+            background-color: #d6c634;
+        }
+
+        .left-title {
+            width: 80px;
+            color: #fff;
+            font-size: 18px;
+            float: left;
+        }
+
+        .right-title {
+            width: 150px;
+            text-align: right;
+            float: right;
+            color: #fff;
+        }
+
+        .quiz-body {
+            margin-top: 15px;
+            padding-bottom: 50px;
+        }
+
+        .option-block-container {
+            margin-top: 20px;
+            max-width: 420px;
+        }
+
+        .option-block {
+            padding: 10px;
+            background: aliceblue;
+            border: 1px solid #84c5fe;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .result-question {
+            font-weight: bold;
+        }
+
+        .c-wrong {
+            margin-left: 20px;
+            /* background-color: #ff0000; */
+            color: #ff0000;
+        }
+
+        .c-correct {
+            margin-left: 20px;
+            /* background-color: green; */
+            color: green;
+        }
+
+        .last-row {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 25px;
+            margin-bottom: 25px;
+        }
+
+        .res-header {
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="left-title">Your Quiz</div>
+        <div class="right-title">Total Questions: <span id="tque"></span></div>
+        <div class="clearfix"></div>
+    </header>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="result" class="quiz-body">
+                        <form name="quizForm" onSubmit="">
+                            <fieldset class="form-group">
+                                <h4><span id="qid">1.</span> <span id="question"></span></h4>
+                                <div class="option-block-container" id="question-options">
+                                </div> <!-- End of option block -->
+                            </fieldset>
+                            <button name="previous" id="previous" class="btn btn-success">Previous</button>
+                            &nbsp;
+                            <button name="next" id="next" class="btn btn-success">Next</button>
+                        </form>
+                    </div>
+                </div> <!-- End of col-sm-12 -->
+            </div> <!-- End of row -->
+        </div> <!-- ENd of container fluid -->
+    </div> <!-- End of content -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <!-- <script src="main.js"></script> -->
+
+    <script>
+
+        // var quiz = {
+        //     "Gen": [
+        //         {
+        //             "id": 1,
+        //             "question": "What is the capital of France?",
+        //             "options": [
+        //                 {
+        //                     "a": "Madrid",
+        //                     "b": "Paris",
+        //                     "c": "Berlin",
+        //                     "d": "London;"
+        //                 }
+        //             ],
+        //             "answer": "Paris",
+        //             "score": 0,
+        //             "status": ""
+        //         },
+        //         {
+        //             "id": 2,
+        //             "question": "Who painted the Mona Lisa?",
+        //             "options": [
+        //                 {
+        //                     "a": "Vincent van Gogh",
+        //                     "b": "Leonardo da Vinci",
+        //                     "c": "Pablo Picasso",
+        //                     "d": "Michelangelo"
+        //                 }
+        //             ],
+        //             "answer": "Leonardo da Vinci",
+        //             "score": 0,
+        //             "status": ""
+        //         },
+        //         {
+        //             "id": 3,
+        //             "question": "What is the tallest mountain in the world?",
+        //             "options": [
+        //                 {
+        //                     "a": "Mount Everest",
+        //                     "b": "Mount Kilimanjaro",
+        //                     "c": "Mount Fuji",var quiz = {
+        //     "Gen": [
+        //         {
+        //             "id": 1,
+        //             "question": "What is the capital of France?",
+        //             "options": [
+        //                 {
+        //                     "a": "Madrid",
+        //                     "b": "Paris",
+        //                     "c": "Berlin",
+        //                     "d": "London;"
+        //                 }
+        //             ],
+        //             "answer": "Paris",
+        //             "score": 0,
+        //             "status": ""
+        //         },
+        //         {
+        //             "id": 2,
+        //             "question": "Who painted the Mona Lisa?",
+        //             "options": [
+        //                 {
+        //                     "a": "Vincent van Gogh",
+        //                     "b": "Leonardo da Vinci",
+        //                     "c": "Pablo Picasso",
+        //                     "d": "Michelangelo"
+        //                 }
+        //             ],
+        //             "answer": "Leonardo da Vinci",
+        //             "score": 0,
+        //             "status": ""
+        //         },
+        //         {
+        //             "id": 3,
+        //             "question": "What is the tallest mountain in the world?",
+        //             "options": [
+        //                 {
+        //                     "a": "Mount Everest",
+        //                     "b": "Mount Kilimanjaro",
+        //                     "c": "Mount Fuji",
+        //                     "d": "Mount Rushmore"
+        //                 }
+        //             ],
+        //             "answer": "Mount Everest",
+        //             "score": 0,
+        //             "status": ""
+        //         },
+        //         {
+        //             "id": 4,
+        //             "question": "What is the currency of Japan??",
+        //             "options": [
+        //                 {
+        //                     "a": "Yuan",
+        //                     "b": "Yen",
+        //                     "c": "Euro",
+        //                     "d": "Dollar"
+        //                 }
+        //             ],
+        //             "answer": "Euro",
+        //             "score": 0,
+        //             "status": ""
+        //         },
+        //         {
+        //             "id": 5,
+        //             "question": "Who wrote the Harry Potter series?",
+        //             "options": [
+        //                 {
+        //                     "a": "Stephen King",
+
+        //      "b": "J.R.R. Tolkien",
+        //                     "c": "J.K. Rowling",
+        //                     "d": "George R.R. Martin"
+        //                 }
+        //             ],
+        //             "answer": "J.K. Rowling",
+        //             "score": 0,
+        //             "status": ""
+        //         }
+
+        //     ]
+        // }
+        //                     "d": "Mount Rushmore"
+        //                 }
+        //             ],
+        //             "answer": "Mount Everest",
+        //             "score": 0,
+        //             "status": ""
+        //         },
+        //         {
+        //             "id": 4,
+        //             "question": "What is the currency of Japan??",
+        //             "options": [
+        //                 {
+        //                     "a": "Yuan",
+        //                     "b": "Yen",
+        //                     "c": "Euro",
+        //                     "d": "Dollar"
+        //                 }
+        //             ],
+        //             "answer": "Euro",
+        //             "score": 0,
+        //             "status": ""
+        //         },
+        //         {
+        //             "id": 5,
+        //             "question": "Who wrote the Harry Potter series?",
+        //             "options": [
+        //                 {
+        //                     "a": "Stephen King",
+
+        //      "b": "J.R.R. Tolkien",
+        //                     "c": "J.K. Rowling",
+        //                     "d": "George R.R. Martin"
+        //                 }
+        //             ],
+        //             "answer": "J.K. Rowling",
+        //             "score": 0,
+        //             "status": ""
+        //         }
+
+        //     ]
+        // }
+        const quiz = JSON.parse(localStorage.getItem('Questions'))
+        console.log("quiz :: ", typeof quiz, quiz);
+        var quizApp = function () {
+            this.score = 0;
+            this.qno = 1;
+            this.currentque = 0;
+            var totalque = quiz.length;
+            this.displayQuiz = function (cque) {
+                this.currentque = cque;
+                if (this.currentque < totalque) {
+                    $("#tque").html(totalque);
+                    $("#previous").attr("disabled", false);
+                    $("#next").attr("disabled", false);
+                    $("#qid").html(cque + 1 + ".");
+
+                    // $("#qid").html(quiz[this.currentque].id + '.');
+                    $("#question").html(quiz[this.currentque].question);
+                    $("#question-options").html("");
+                    for (var key in quiz[this.currentque].options[0]) {
+                        if (quiz[this.currentque].options[0].hasOwnProperty(key)) {
+                            $("#question-options").append(
+                                "<div class='form-check option-block'>" +
+                                "<label class='form-check-label'>" +
+                                "<input type='radio' class='form-check-input' name='option' id='q" + key + "' value='" + quiz[this.currentque].options[0][key] + "'><span id='optionval'>" +
+                                quiz[this.currentque].options[0][key] +
+                                "</span></label>"
+                            );
+                        }
+                    }
+                }
+                if (this.currentque <= 0) {
+                    $("#previous").attr("disabled", true);
+                }
+                if (this.currentque >= totalque) {
+                    $('#next').attr('disabled', true);
+                    for (var i = 0; i < totalque; i++) {
+                        this.score = this.score + quiz[i].score;
+                    }
+                    return this.showResult(this.score);
+                }
+            }
+            this.showResult = function (scr) {
+                $("#result").addClass('result');
+                $("#result").html("<h1 class='res-header'>Total Score: &nbsp;" + scr + '/' + totalque + "</h1>");
+                for (var j = 0; j < totalque; j++) {
+                    var res;
+                    if (quiz[j].score == 0) {
+                        res = '<span class="wrong">' + quiz[j].score + '</span><i class="fa fa-remove c-wrong"></i>';
+                    } else {
+                        res = '<span class="correct">' + quiz[j].score + '</span><i class="fa fa-check c-correct"></i>';
+                    }
+                    $("#result").append(
+                        '<div class="result-question"><span>Q ' + quiz[j].id + '</span> &nbsp;' + quiz.JS[j].question + '</div>' +
+                        '<div><b>Correct answer:</b> &nbsp;' + quiz[j].answer + '</div>' +
+                        '<div class="last-row"><b>Score:</b> &nbsp;' + res +
+                        '</div>'
+                    );
+                }
+            }
+            this.checkAnswer = function (option) {
+                var answer = quiz[this.currentque].answer;
+                // option = option.replace(/</g, "&lt;") //for <
+                // option = option.replace(/>/g, "&gt;") //for >
+                // option = option.replace(/"/g, "&quot;")
+                if (option == quiz[this.currentque].answer) {
+                    if (quiz[this.currentque].score == "") {
+                        quiz[this.currentque].score = 1;
+                        quiz[this.currentque].status = "correct";
+                    }
+                } else {
+                    quiz[this.currentque].status = "wrong";
+                }
+            }
+            this.changeQuestion = function (cque) {
+                this.currentque = this.currentque + cque;
+                this.displayQuiz(this.currentque);
+            }
+        }
+        var jsq = new quizApp();
+        var selectedopt;
+        $(document).ready(function () {
+            jsq.displayQuiz(0);
+            $('#question-options').on('change', 'input[type=radio][name=option]', function (e) {
+                //var radio = $(this).find('input:radio');
+                $(this).prop("checked", true);
+                selectedopt = $(this).val();
+            });
+        });
+        $('#next').click(function (e) {
+            e.preventDefault();
+            if (selectedopt) {
+                jsq.checkAnswer(selectedopt);
+            }
+            jsq.changeQuestion(1);
+        });
+        $('#previous').click(function (e) {
+            e.preventDefault();
+            if (selectedopt) {
+                jsq.checkAnswer(selectedopt);
+            }
+            jsq.changeQuestion(-1);
+        });</script>
+</body>
+
+</html>

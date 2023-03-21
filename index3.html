@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Quiz</title>
+    <style>
+        body {
+            background-image: url("images/solar-system-animation.svg");
+            background-size: cover;
+
+            background-repeat: no-repeat;
+        }
+
+        form {
+            background-color: rgba(255, 248, 220, 0.792);
+            margin: 10px 300px 0px 300px;
+            padding: 10px 0px 30px 0px;
+            border: 2px solid black;
+            border-radius: 50px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <form action="" align="center">
+        <p>Enter a Question</p>
+        <input type="text" id="Quitions" />
+        <p for="opt">option a:</p>
+        <input type="text" name="option1" id="opt1" />
+        <p for="opt">option b:</p>
+        <input type="text" name="option2" id="opt2" />
+        <p for="opt">option c:</p>
+        <input type="text" name="option3" id="opt3" />
+        <p for="opt">option d:</p>
+        <input type="text" name="option4" id="opt4" /><br />
+        <p>correct answer:</p>
+        <input type="text" id="ans" /> <br /><br />
+        <input type="submit" id="submit" /> <br><br>
+        <button id="play"><a href="play.html">Play Quiz</a> </button>
+        <br><br>
+        <button id="clear">Delete Quiz</button>
+    </form>
+
+    <!-- Quizz starts -->
+    <div id="QuitionsX"></div>
+    <div id="opt1X"></div>
+    <div id="opt2X"></div>
+    <div id="opt3X"></div>
+    <div id="opt4X"></div>
+    <script>
+        submit.addEventListener("click", function () {
+            let question = document.getElementById("Quitions").value;
+            let opt1 = document.getElementById("opt1").value;
+            let opt2 = document.getElementById("opt2").value;
+            let opt3 = document.getElementById("opt3").value;
+            let opt4 = document.getElementById("opt4").value;
+            let answer = document.getElementById("ans").value;
+            let options = [{ opt1 }]
+            // let newQuestion = [question, opt1, opt2, opt3, opt4, answer, "0" ," "];
+            let newQuestion = {
+                // "id": 3,
+                "question": question,
+                "options": [
+                    {
+                        "a": opt1,
+                        "b": opt2,
+                        "c": opt3,
+                        "d": opt4
+                    }
+                ],
+                "answer": answer,
+                "score": 0,
+                "status": ""
+            };
+
+            // Retrieve existing data from local storage
+            let questions = JSON.parse(localStorage.getItem("Questions")) || [];
+
+            // Add new question to existing data
+            questions.push(newQuestion);
+
+            // Store the combined data back in local storage
+            localStorage.setItem("Questions", JSON.stringify(questions));
+        });
+
+        //  clears local storage
+        clear.addEventListener("click", function () {
+            localStorage.clear();
+
+        });
+
+
+        play.addEventListener("click", function () {
+            // Retrieve questions from local storage
+            let questions = JSON.parse(localStorage.getItem("Questions")) || [];
+
+            // Check if there are questions available to play
+            if (questions.length === 0) {
+                alert("No questions available to play!");
+                return;
+            }
+
+            // Shuffle the questions randomly
+            questions = shuffleArray(questions);
+
+            // Load the first question in the quiz
+            let currentQuestion = 0;
+            loadQuestion(currentQuestion);
+
+            // Function to load a question in the quiz
+            function loadQuestion(index) {
+                // preventDefault();
+                let question = questions[index][0];
+                let options = [questions[index][1], questions[index][2], questions[index][3], questions[index][4]];
+                let answer = questions[index][5];
+
+                // Display the question and options on the web page
+                document.getElementById("QuitionsX").innerHTML = question;
+                document.getElementById("opt1X").innerHTML = options[0];
+                document.getElementById("opt2X").innerHTML = options[1];
+                document.getElementById("opt3X").innerHTML = options[2];
+                document.getElementById("opt4X").innerHTML = options[3];
+
+                // Add event listener to check the answer and load the next question
+                let submitButton = document.getElementById("submit");
+                submitButton.onclick = function () {
+                    let selectedOption = document.querySelector("input[type=radio]:checked");
+                    if (!selectedOption) {
+                        alert("Please select an option to continue!");
+                        return;
+                    }
+                    let selectedAnswer = selectedOption.value;
+                    if (selectedAnswer === answer) {
+                        alert("Correct Answer!");
+                    } else {
+                        alert("Wrong Answer!");
+                    }
+                    selectedOption.checked = false;
+                    currentQuestion++;
+                    if (currentQuestion === questions.length) {
+                        alert("Quiz Over!");
+                        return;
+                    }
+                    loadQuestion(currentQuestion);
+                };
+            }
+
+            // Function to shuffle the array randomly
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    let j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+        });
+    </script>
+</body>
+
+</html>
